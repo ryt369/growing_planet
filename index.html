@@ -3,102 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="生长星球——在属于你的星球上种下植物。">
-  <title>生长星球</title>
+  <meta name="description" content="生长星球 Three.js 3D 交互版本">
+  <title>生长星球 · 3D</title>
   <link rel="stylesheet" href="style.css">
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+      }
+    }
+  </script>
 </head>
 <body>
   <main class="app">
-    <header class="app__header">
+    <header class="hud">
+      <p class="eyebrow">THREE.JS EXPERIENCE</p>
       <h1>生长星球</h1>
-      <p>点击种植 · 拖拽旋转 · 滚轮缩放</p>
+      <p class="instructions">点击种植 · 拖拽旋转 · 滚轮缩放</p>
     </header>
 
-    <section
-      id="planet-container"
-      class="planet-container"
-      aria-label="可交互的生长星球"
-    >
-      <svg
-        id="planet-svg"
-        class="planet"
-        width="600"
-        height="600"
-        viewBox="0 0 600 600"
-        role="img"
-        aria-labelledby="planet-title planet-description"
-      >
-        <title id="planet-title">生长星球</title>
-        <desc id="planet-description">点击星球表面可以种植植物</desc>
+    <div id="scene-container" aria-label="生长星球 3D 交互场景"></div>
 
-        <defs>
-          <!-- 光源稍微偏向左上角，让球体更有立体感。 -->
-          <radialGradient id="planet-gradient" cx="32%" cy="26%" r="76%">
-            <stop offset="0%" stop-color="#4a7c59" />
-            <stop offset="58%" stop-color="#3a6450" />
-            <stop offset="100%" stop-color="#2d4a3e" />
-          </radialGradient>
-
-          <!-- 由不规则分布的小点组成的轻量表面纹理。 -->
-          <pattern id="planet-texture" width="72" height="68" patternUnits="userSpaceOnUse">
-            <circle cx="9" cy="14" r="1.4" fill="#b9d5bd" opacity="0.22" />
-            <circle cx="35" cy="8" r="0.9" fill="#d4e5d4" opacity="0.16" />
-            <circle cx="61" cy="23" r="1.8" fill="#172f28" opacity="0.2" />
-            <circle cx="21" cy="42" r="1.1" fill="#19372d" opacity="0.18" />
-            <circle cx="52" cy="55" r="1.3" fill="#a4c5aa" opacity="0.17" />
-            <circle cx="68" cy="64" r="0.7" fill="#d4e5d4" opacity="0.14" />
-            <circle cx="4" cy="61" r="0.8" fill="#18352b" opacity="0.2" />
-          </pattern>
-
-          <clipPath id="planet-clip">
-            <circle cx="300" cy="300" r="250" />
-          </clipPath>
-
-          <filter id="planet-glow" x="-35%" y="-35%" width="170%" height="170%">
-            <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="#78c999" flood-opacity="0.3" />
-            <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#000000" flood-opacity="0.38" />
-          </filter>
-        </defs>
-
-        <g id="planet-viewport" filter="url(#planet-glow)">
-          <g id="planet-body">
-            <circle
-              id="planet-surface"
-              cx="300"
-              cy="300"
-              r="250"
-              fill="url(#planet-gradient)"
-            />
-
-            <circle
-              class="planet-texture"
-              cx="300"
-              cy="300"
-              r="250"
-              fill="url(#planet-texture)"
-            />
-
-            <ellipse
-              class="planet-highlight"
-              cx="220"
-              cy="195"
-              rx="115"
-              ry="72"
-            />
-          </g>
-
-          <!-- 后续生成的植物将放入此图层，并被限制在星球范围内。 -->
-          <g id="plants-layer" clip-path="url(#planet-clip)"></g>
-        </g>
-      </svg>
-    </section>
-
-    <p id="status" class="status" aria-live="polite">点击星球，种下第一株植物</p>
+    <p id="status" class="status" aria-live="polite">
+      点击星球表面，种下第一株 3D 植物
+    </p>
   </main>
 
-  <!-- 所有屏幕级粒子与流星特效共用此 Canvas。 -->
-  <canvas id="effects-canvas" aria-hidden="true"></canvas>
-
-  <script src="script.js"></script>
+  <noscript>此项目需要启用 JavaScript 才能运行。</noscript>
+  <script type="module" src="script.js"></script>
 </body>
 </html>

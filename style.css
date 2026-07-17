@@ -1,8 +1,8 @@
 :root {
   color-scheme: dark;
   font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
-  background-color: #050812;
-  color: #f4f7ff;
+  color: #eef8ff;
+  background: #02050d;
 }
 
 * {
@@ -10,228 +10,101 @@
 }
 
 html,
-body {
+body,
+.app,
+#scene-container {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   margin: 0;
 }
 
 body {
-  position: relative;
   min-height: 100vh;
   overflow: hidden;
   background:
-    radial-gradient(circle at 18% 24%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 74% 18%, rgba(162, 202, 255, 0.7) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 82% 72%, rgba(255, 255, 255, 0.65) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 35% 80%, rgba(188, 216, 255, 0.55) 0 1px, transparent 1.5px),
-    radial-gradient(ellipse at center, #111b38 0%, #080d1d 45%, #03050c 100%);
-  background-size: 190px 190px, 260px 260px, 330px 330px, 420px 420px, 100% 100%;
-}
-
-body::before {
-  position: fixed;
-  z-index: 0;
-  inset: 0;
-  background: radial-gradient(circle at 50% 42%, #081226 0%, #030713 52%, #000207 100%);
-  opacity: 0;
-  pointer-events: none;
-  content: "";
-  transition: opacity 1.5s ease;
-}
-
-body.night-mode::before {
-  opacity: 0.88;
+    radial-gradient(circle at 50% 44%, rgba(18, 42, 64, 0.7), transparent 42%),
+    linear-gradient(160deg, #070d1c 0%, #02050d 58%, #000207 100%);
 }
 
 .app {
   position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  place-items: center;
-  min-height: 100vh;
-  padding: 28px;
 }
 
-#effects-canvas {
-  position: fixed;
-  z-index: 2;
+#scene-container {
+  position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
 }
 
-.app__header {
-  z-index: 1;
-  text-align: center;
-}
-
-.app__header h1 {
-  margin: 0;
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
-  letter-spacing: 0.18em;
-}
-
-.app__header p,
-.status {
-  margin: 10px 0 0;
-  color: #aebbd7;
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
-}
-
-.planet-container {
-  display: grid;
-  place-items: center;
-  width: min(76vw, 600px);
-  aspect-ratio: 1;
-  touch-action: none;
-  user-select: none;
-}
-
-.planet {
+#scene-container canvas {
   display: block;
   width: 100%;
   height: 100%;
-  overflow: visible;
   cursor: grab;
-  transform-origin: center;
-  transition: filter 180ms ease;
+  touch-action: none;
 }
 
-.planet:active {
+#scene-container canvas:active {
   cursor: grabbing;
 }
 
-.planet.is-dragging {
-  cursor: grabbing;
-}
-
-.planet:hover {
-  filter: brightness(1.05);
-}
-
-.planet-highlight {
-  fill: rgba(255, 255, 255, 0.07);
+.hud {
+  position: absolute;
+  z-index: 2;
+  top: clamp(24px, 5vh, 54px);
+  left: 50%;
+  width: min(90vw, 620px);
+  text-align: center;
   pointer-events: none;
-  transform: rotate(-28deg);
-  transform-origin: 220px 195px;
+  transform: translateX(-50%);
 }
 
-.planet-texture {
-  pointer-events: none;
+.eyebrow {
+  margin: 0 0 8px;
+  color: #75bca2;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
 }
 
-#planet-viewport {
-  transform-box: view-box;
-  transform-origin: 300px 300px;
-  transition: transform 80ms ease-out;
+.hud h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 650;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 28px rgba(83, 182, 147, 0.3);
 }
 
-#planet-body {
-  transition: filter 1.5s ease;
+.instructions,
+.status {
+  color: #9fb2c8;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
 }
 
-body.night-mode #planet-body {
-  filter: brightness(0.58) saturate(0.78);
-}
-
-.plant {
-  --glow-color: rgba(142, 255, 180, 0.85);
-  pointer-events: none;
-  transition: filter 1.5s ease;
-}
-
-.plant-visual {
-  --size: 0.5;
-  transform: scale(var(--size));
-  transform-origin: 0 0;
-}
-
-.plant.is-growing .plant-visual {
-  animation: plant-grow 720ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-.plant-art {
-  --stem-color: #477b49;
-  --leaf-color: #5fae61;
-  --leaf-light: #91d477;
-  --leaf-dark: #347348;
-  --soil-color: #263e32;
-  --flower-color: #e46f9e;
-  --flower-light: #ffc4dc;
-  --flower-center: #ffd66b;
-  --trunk-color: #76533a;
-  --glow-color: rgba(142, 255, 180, 0.85);
-  overflow: visible;
-}
-
-.plant-art * {
-  transition: fill 1.2s ease, stroke 1.2s ease;
-}
-
-.breathing-leaf {
-  transform-box: fill-box;
-  transform-origin: center bottom;
-  animation: leaf-breathe 2.8s ease-in-out infinite;
-}
-
-body.night-mode .plant {
-  --glow-color: rgba(142, 255, 180, 0.9);
-  filter: drop-shadow(0 0 4px var(--glow-color, rgba(142, 255, 180, 0.85)));
-}
-
-body.night-mode .plant-art {
-  --stem-color: #65e89a;
-  --leaf-color: #72f4a8;
-  --leaf-light: #c0ffd3;
-  --leaf-dark: #3fca82;
-  --flower-color: #ff8fd4;
-  --flower-light: #ffe0f5;
-  --flower-center: #fff59b;
-  --trunk-color: #b08b66;
-  --glow-color: rgba(142, 255, 180, 0.9);
-}
-
-@keyframes plant-grow {
-  from {
-    opacity: 0;
-    transform: scale(0);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(var(--size));
-  }
-}
-
-@keyframes leaf-breathe {
-  0%,
-  100% {
-    opacity: 0.78;
-    transform: scale(0.97);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.04);
-  }
+.instructions {
+  margin: 10px 0 0;
 }
 
 .status {
-  min-height: 1.5em;
+  position: absolute;
+  z-index: 2;
+  bottom: clamp(22px, 5vh, 48px);
+  left: 50%;
   margin: 0;
-  text-align: center;
+  padding: 9px 16px;
+  border: 1px solid rgba(132, 193, 174, 0.16);
+  border-radius: 999px;
+  background: rgba(3, 10, 18, 0.48);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  transform: translateX(-50%);
 }
 
-@media (max-width: 600px) {
-  .app {
-    padding: 20px 14px;
-  }
-
-  .planet-container {
-    width: min(96vw, 560px);
-  }
+noscript {
+  position: fixed;
+  z-index: 5;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #02050d;
 }
